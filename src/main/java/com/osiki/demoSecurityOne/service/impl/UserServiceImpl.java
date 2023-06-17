@@ -1,16 +1,14 @@
 package com.osiki.demoSecurityOne.service.impl;
 
 import com.osiki.demoSecurityOne.config.JwtService;
-import com.osiki.demoSecurityOne.dto.AuthResponse;
-import com.osiki.demoSecurityOne.dto.LoginRequestDto;
-import com.osiki.demoSecurityOne.dto.RegisterRequestDto;
+import com.osiki.demoSecurityOne.dto.*;
 import com.osiki.demoSecurityOne.entity.User;
 import com.osiki.demoSecurityOne.enums.Role;
 import com.osiki.demoSecurityOne.repository.UserRepository;
 import com.osiki.demoSecurityOne.service.UserService;
+import com.osiki.demoSecurityOne.utils.AccountUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,12 +41,22 @@ public class UserServiceImpl implements UserService {
        var jwtToken = jwtService.generateToken(user);
 
        return AuthResponse.builder()
-               .token(jwtToken)
+               .responseCode(AccountUtils.ACCOUNT_CREATION_SUCCESS_CODE)
+               .responseMessage(AccountUtils.ACCOUNT_CREATION_MESSAGE)
+               .registrationInfo(RegistrationInfo.builder()
+
+                       .firstname(user.getFirstname())
+                       .lastname(user.getLastname())
+                       .email(user.getEmail())
+                       .token(jwtToken)
+                       .build())
+
+               //.token(jwtToken)
                .build();
     }
 
     @Override
-    public AuthResponse login(LoginRequestDto loginRequestDto) {
+    public LoginResponse login(LoginRequestDto loginRequestDto) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -62,8 +70,14 @@ public class UserServiceImpl implements UserService {
 
         var jwtToken = jwtService.generateToken(user);
 
-        return AuthResponse.builder()
-                .token(jwtToken)
+        return LoginResponse.builder()
+                .responseCode(AccountUtils.LOGIN_SUCCESS_CODE)
+                .responseMessage(AccountUtils.LOGIN_SUCCESS_MESSAGE)
+                .loginInfo(LoginInfo.builder()
+                        .email(user.getEmail())
+                        .token(jwtToken)
+                        .build())
+                //.token(jwtToken)
                 .build();
     }
 }

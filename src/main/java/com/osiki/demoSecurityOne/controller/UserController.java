@@ -2,6 +2,7 @@ package com.osiki.demoSecurityOne.controller;
 
 import com.osiki.demoSecurityOne.dto.AuthResponse;
 import com.osiki.demoSecurityOne.dto.LoginRequestDto;
+import com.osiki.demoSecurityOne.dto.LoginResponse;
 import com.osiki.demoSecurityOne.dto.RegisterRequestDto;
 import com.osiki.demoSecurityOne.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping("/login")
 
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequestDto loginRequestDto){
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequestDto loginRequestDto){
 
         return ResponseEntity.ok(userService.login(loginRequestDto));
 

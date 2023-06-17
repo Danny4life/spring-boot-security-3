@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountInfo {
-
-    private String token;
-    private String firstname;
-    private String lastname;
-    private String email;
-
+public class LoginResponse {
+    private String responseCode;
+    private String responseMessage;
+    private LoginInfo loginInfo;
 }
